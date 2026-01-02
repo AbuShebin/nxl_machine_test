@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nxl_machine_test/core/validators.dart';
 import 'package:nxl_machine_test/features/auth/presentation/pages/register_page.dart';
 import 'package:nxl_machine_test/features/auth/presentation/providers/auth_provider.dart';
+import 'package:nxl_machine_test/features/home/presentation/pages/home_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -43,8 +44,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(next.error!), backgroundColor: Colors.red),
         );
-        // Clear error immediately after showing
-        ref.read(authProvider.notifier).clearError();
       }
       if (next.isAuthenticated && (previous?.isAuthenticated != true)) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -53,8 +52,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             backgroundColor: Colors.green,
           ),
         );
-        // Navigate to some home page? User didn't ask for a home page,
-        // just login/register pages. I'll leave it on this page but authenticated.
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
       }
     });
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nxl_machine_test/core/validators.dart';
 import 'package:nxl_machine_test/features/auth/presentation/providers/auth_provider.dart';
+import 'package:nxl_machine_test/features/home/presentation/pages/home_page.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
@@ -47,7 +48,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(next.error!), backgroundColor: Colors.red),
         );
-        ref.read(authProvider.notifier).clearError();
       }
 
       if (next.isAuthenticated && (previous?.isAuthenticated != true)) {
@@ -56,6 +56,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             content: Text('Registration Successful!'),
             backgroundColor: Colors.green,
           ),
+        );
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const HomePage()),
+          (route) => false,
         );
       }
     });
