@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:nxl_machine_test/core/errors/exceptions.dart';
 import 'package:nxl_machine_test/core/errors/failures.dart';
 import 'package:nxl_machine_test/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:nxl_machine_test/features/auth/domain/entities/user_entity.dart';
+import 'package:nxl_machine_test/features/auth/data/models/user_model.dart';
 import 'package:nxl_machine_test/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -11,7 +11,7 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, UserEntity>> login({
+  Future<Either<Failure, UserModel>> login({
     required String email,
     required String password,
   }) async {
@@ -20,7 +20,8 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-      return Right(user.toEntity());
+      print("auth impl $user");
+      return Right(user);
     } on AuthException catch (e) {
       return Left(AuthFailure(e.message));
     } catch (e) {
@@ -29,7 +30,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> register({
+  Future<Either<Failure, UserModel>> register({
     required String email,
     required String password,
     required String name,
@@ -40,7 +41,7 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
         name: name,
       );
-      return Right(user.toEntity());
+      return Right(user);
     } on AuthException catch (e) {
       return Left(AuthFailure(e.message));
     } catch (e) {
@@ -61,10 +62,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity?>> getCurrentUser() async {
+  Future<Either<Failure, UserModel?>> getCurrentUser() async {
     try {
       final user = await remoteDataSource.getCurrentUser();
-      return Right(user?.toEntity());
+      return Right(user);
     } on AuthException catch (e) {
       return Left(AuthFailure(e.message));
     } catch (e) {

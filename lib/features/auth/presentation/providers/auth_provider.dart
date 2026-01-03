@@ -1,18 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nxl_machine_test/features/auth/domain/entities/user_entity.dart';
+import 'package:nxl_machine_test/features/auth/data/models/user_model.dart';
 import 'package:nxl_machine_test/features/auth/domain/repositories/auth_repository.dart';
 import 'package:nxl_machine_test/features/auth/presentation/providers/auth_repository_provider.dart';
+import 'package:nxl_machine_test/features/home/presentation/pages/home_page.dart';
 
 class AuthState {
   final bool isLoading;
   final String? error;
-  final UserEntity? user;
+  final UserModel? user;
 
   AuthState({this.isLoading = false, this.error, this.user});
 
   bool get isAuthenticated => user != null;
 
-  AuthState copyWith({bool? isLoading, String? error, UserEntity? user}) {
+  AuthState copyWith({bool? isLoading, String? error, UserModel? user}) {
     return AuthState(
       isLoading: isLoading ?? this.isLoading,
       error: error,
@@ -36,7 +38,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(
+    String email,
+    String password,
+    BuildContext context,
+  ) async {
     state = AuthState(isLoading: true);
 
     final result = await _authRepository.login(
@@ -45,8 +51,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
 
     result.fold(
-      (failure) => state = AuthState(error: failure.message),
-      (user) => state = AuthState(user: user),
+      (failure) {
+        state = AuthState(error: failure.message);
+        print("login failed ${failure.message}");
+      },
+      (user) {
+        print("login success");
+        state = AuthState(user: user);
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      },
     );
   }
 

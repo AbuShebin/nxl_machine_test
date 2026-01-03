@@ -35,6 +35,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
+      print("remote data source triggered");
+
       final userCredential = await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -52,6 +54,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (!userDoc.exists) {
         throw const AuthException('User data not found');
       }
+
+      print("remote data source $userDoc");
 
       return UserModel.fromJson(userDoc.data()!);
     } on FirebaseAuthException catch (e) {

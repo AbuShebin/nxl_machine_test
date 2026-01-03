@@ -28,7 +28,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     if (_formKey.currentState!.validate()) {
       ref
           .read(authProvider.notifier)
-          .login(_emailController.text.trim(), _passwordController.text);
+          .login(
+            _emailController.text.trim(),
+            _passwordController.text,
+            context,
+          );
     }
   }
 
@@ -36,27 +40,24 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
 
-    // Listen to state changes to show snackbar logic or navigation if needed
-    // Typically navigation is handled in a listening callback or cleaner router setup,
-    // but for this simple task, we can just show a success message.
-    ref.listen(authProvider, (previous, next) {
-      if (next.error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error!), backgroundColor: Colors.red),
-        );
-      }
-      if (next.isAuthenticated && (previous?.isAuthenticated != true)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login Successful!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-      }
-    });
+    // ref.listen(authProvider, (previous, next) {
+    //   if (next.error != null) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text(next.error!), backgroundColor: Colors.red),
+    //     );
+    //   }
+    //   if (next.isAuthenticated && (previous?.isAuthenticated != true)) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       const SnackBar(
+    //         content: Text('Login Successful!'),
+    //         backgroundColor: Colors.green,
+    //       ),
+    //     );
+    //     Navigator.of(context).pushReplacement(
+    //       MaterialPageRoute(builder: (context) => const HomePage()),
+    //     );
+    //   }
+    // });
 
     return Scaffold(
       body: Center(
