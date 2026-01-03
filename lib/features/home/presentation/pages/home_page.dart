@@ -19,8 +19,7 @@ class HomePage extends ConsumerWidget {
             icon: const Icon(Icons.logout),
             onPressed: () {
               ref.read(authProvider.notifier).logout();
-              // Navigation back to login is handled by the state change in main.dart or pages
-              // For simplicity in this manual flow, we'll let the listener in pages handle it or Navigator.pop
+
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const LoginPage()),
                 (route) => false,

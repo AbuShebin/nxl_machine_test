@@ -40,25 +40,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
 
-    // ref.listen(authProvider, (previous, next) {
-    //   if (next.error != null) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(content: Text(next.error!), backgroundColor: Colors.red),
-    //     );
-    //   }
-    //   if (next.isAuthenticated && (previous?.isAuthenticated != true)) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       const SnackBar(
-    //         content: Text('Login Successful!'),
-    //         backgroundColor: Colors.green,
-    //       ),
-    //     );
-    //     Navigator.of(context).pushReplacement(
-    //       MaterialPageRoute(builder: (context) => const HomePage()),
-    //     );
-    //   }
-    // });
-
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -71,12 +52,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Icon(
-                    Icons.lock_person_rounded,
-                    size: 80,
-                    color: Colors.deepPurple,
-                  ),
-                  const SizedBox(height: 32),
                   Text(
                     'Welcome Back',
                     textAlign: TextAlign.center,
